@@ -158,6 +158,42 @@ module.exports = [
 	},
 
 	{
+		description: 'handles essentially-empty while loop body',
+		input: `while ( x() ) { ; ; }`,
+		output: `while(x());`
+	},
+
+	{
+		description: 'handles essentially-empty do-while loop body',
+		input: `do { ; ; } while ( x() );`,
+		output: `do;while(x())`
+	},
+
+	{
+		description: 'handles essentially-empty for loop body',
+		input: `for ( ; ; x() ) { ; ; }`,
+		output: `for(;;x());`
+	},
+
+	{
+		description: 'handles non-empty while loop body starting with empty statement',
+		input: `while ( x() ) { ; a(); }`,
+		output: `while(x()) a();`
+	},
+
+	{
+		description: 'handles non-empty do-while loop body starting with empty statement',
+		input: `do { ; a(); } while ( x() );`,
+		output: `do a();while(x())`
+	},
+
+	{
+		description: 'handles non-empty for loop body starting with empty statement',
+		input: `for ( ; ; x() ) { ; a(); }`,
+		output: `for(;;x()) a();`
+	},
+
+	{
 		description: 'handles duplicate let declarations in for-of loop head',
 		input: `
 			for (let x of a) {
@@ -179,9 +215,9 @@ module.exports = [
 				}
 			})();`,
 		output: `!(()=>{let a=0;for(;;)f(a)})()`
-  },
-  
-  {
+	},
+
+	{
 		description: 'preserves semi-colon for body-less while loop at end of body',
 		input: `
 			function f() {
